@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Доступ к emoji-статусу</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--tg-theme-bg-color, #ffffff);
+      color: var(--tg-theme-text-color, #000000);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    button {
+      background: var(--tg-theme-button-color, #2481cc);
+      color: var(--tg-theme-button-text-color, #ffffff);
+      border: none;
+      border-radius: 12px;
+      padding: 14px 28px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 16px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔔 Доступ к emoji-статусу</h2>
+  <p>
+    Нажми кнопку ниже, чтобы разрешить боту автоматически менять твой
+    emoji-статус в зависимости от активности.
+  </p>
+  <button id="grantBtn">Разрешить доступ</button>
+  <div id="status"></div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    const statusEl = document.getElementById("status");
+    const btn = document.getElementById("grantBtn");
+
+    btn.addEventListener("click", async () => {
+      statusEl.textContent = "Запрашиваю доступ...";
+      try {
+        if (!tg.requestEmojiStatusAccess) {
+          statusEl.textContent =
+            "Эта версия Telegram не поддерживает данную функцию. Обнови приложение.";
+          return;
+        }
+
+        const result = await tg.requestEmojiStatusAccess();
+
+        if (result === "allowed") {
+          statusEl.textContent = "✅ Доступ выдан! Можешь вернуться в чат с ботом.";
+          btn.style.display = "none";
+        } else {
+          statusEl.textContent = "❌ Доступ не выдан. Попробуй ещё раз.";
+        }
+      } catch (err) {
+        statusEl.textContent = "Ошибка: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
