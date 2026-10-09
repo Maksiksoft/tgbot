@@ -533,7 +533,7 @@
       const subtitle = document.getElementById("pageSubtitle");
       const dialog = document.getElementById("chatDialog");
       const initData = tg?.initData || "";
-      const API_BASE_URL = "";
+      const API_BASE_URL = ""; // Заполним публичным HTTPS-адресом API после его публикации.
       const headers = () => ({ Authorization: `tma ${initData}` });
       const apiUrl = (route) => `${API_BASE_URL}${route}`;
       const escapeInitials = (name) => (name || "P").trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
@@ -587,7 +587,7 @@
 
       async function loadDashboard() {
         if (!API_BASE_URL) {
-          setError("Интерфейс опубликован, сервер данных PHANTON ещё не подключён.");
+          setError("Mini App опубликован, сервер данных ещё не подключён.");
           return;
         }
         if (!initData) {
