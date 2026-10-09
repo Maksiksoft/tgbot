@@ -244,6 +244,8 @@
       transition: transform .2s ease, border-color .2s ease;
     }
     .stat-card:hover { transform: translateY(-3px); border-color: rgba(242, 59, 81, .25); }
+    .stat-card-action { width: 100%; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .stat-card-action:focus-visible { outline: 2px solid rgba(255, 126, 143, .75); outline-offset: 3px; }
     .stat-top { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 10px; }
     .stat-icon { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 9px; color: #ff8390; background: rgba(242, 59, 81, .11); }
     .stat-icon svg { width: 14px; height: 14px; }
@@ -340,11 +342,12 @@
     }
     .error-box button { flex: none; margin-left: auto; border: 0; color: white; background: transparent; cursor: pointer; }
     .page-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(230px, .75fr); gap: 15px; }
-    .panel { padding: 20px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255, 255, 255, .025); }
-    .panel h2 { margin: 0 0 15px; font-size: 13px; }
-    .panel-title { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+    .panel { padding: 21px; border: 1px solid var(--line); border-radius: 17px; background: linear-gradient(145deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, .018)); }
+    .panel h2 { margin: 0 0 16px; font-size: 14px; }
+    .panel-title { display: flex; align-items: center; gap: 11px; margin-bottom: 17px; }
     .panel-title h2 { margin: 0; }
-    .feature-mark svg { width: 15px; height: 15px; }
+    .panel-title .feature-mark { width: 34px; height: 34px; border-radius: 11px; }
+    .feature-mark svg { width: 18px; height: 18px; }
     .profile-head { display: flex; align-items: center; gap: 13px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
     .profile-head .avatar { width: 55px; height: 55px; border-radius: 17px; font-size: 16px; }
     .profile-title { font-size: 14px; font-weight: 700; }
@@ -355,14 +358,15 @@
     .info-label { color: var(--muted); }
     .info-value { color: #e2e0e4; text-align: right; overflow-wrap: anywhere; }
     .feature-list { display: grid; gap: 10px; }
-    .feature { display: flex; gap: 10px; padding: 11px; border: 1px solid rgba(255,255,255,.055); border-radius: 12px; background: rgba(255,255,255,.018); }
-    .feature-mark { width: 26px; height: 26px; display: grid; flex: none; place-items: center; border-radius: 8px; color: #ff8390; background: rgba(242,59,81,.1); font-size: 11px; }
-    .feature strong { display: block; font-size: 10px; }
-    .feature span { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; line-height: 1.55; }
-    .command { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.045); }
+    .feature { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid rgba(255,255,255,.06); border-radius: 13px; background: linear-gradient(110deg, rgba(255,255,255,.025), rgba(255,255,255,.012)); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+    .feature:hover { transform: translateY(-1px); border-color: rgba(242,59,81,.22); background: linear-gradient(110deg, rgba(242,59,81,.055), rgba(255,255,255,.016)); }
+    .feature-mark { width: 34px; height: 34px; display: grid; flex: none; place-items: center; border: 1px solid rgba(255,126,143,.13); border-radius: 11px; color: #ff8d9b; background: linear-gradient(145deg, rgba(242,59,81,.16), rgba(242,59,81,.055)); font-size: 11px; }
+    .feature strong { display: block; color: #f1eff2; font-size: 11px; font-weight: 680; }
+    .feature span { display: block; margin-top: 5px; color: #a5a2aa; font-size: 10px; line-height: 1.6; }
+    .command { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
     .command:last-child { border: 0; }
-    .command code { color: #ff9aa6; font-size: 10px; }
-    .command span { color: #96939a; font-size: 9px; text-align: right; }
+    .command code { padding: 4px 7px; border: 1px solid rgba(242,59,81,.12); border-radius: 7px; color: #ff9aa6; background: rgba(242,59,81,.055); font-size: 10px; }
+    .command span { color: #aaa7ae; font-size: 10px; text-align: right; }
     .skeleton {
       height: 68px;
       border: 1px solid var(--line);
@@ -565,12 +569,14 @@
         search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>',
       };
       const featureIconShapes = {
-        brand: [["path", { d: "M5 18 8.5 6h2.1L14 18M6.5 14h6" }], ["path", { d: "m13 18 2.5-8h1.8l2.7 8M14 15h5" }]],
-        edit: [["path", { d: "M12 20h9" }], ["path", { d: "M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" }]],
-        incoming: [["path", { d: "M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8Z" }]],
+        brand: [["path", { d: "M7 20V4h6a5 5 0 0 1 0 10H7" }]],
+        history: [["path", { d: "M3 12a9 9 0 1 0 2.6-6.4L3 8" }], ["path", { d: "M3 3v5h5" }], ["path", { d: "M12 7v5l3 2" }]],
+        reminder: [["path", { d: "M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" }], ["path", { d: "M10 21h4" }]],
+        reply: [["path", { d: "M10 8 5 12l5 4v-3c4 0 6 1 8 4-.5-5-3-8-8-8Z" }]],
+        incoming: [["path", { d: "M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8Z" }], ["path", { d: "M12 8v6m-2-2 2 2 2-2" }]],
         clock: [["circle", { cx: "12", cy: "12", r: "9" }], ["path", { d: "M12 7v5l3.5 2" }]],
         video: [["rect", { x: "3", y: "5", width: "13", height: "14", rx: "3" }], ["path", { d: "m16 10 5-3v10l-5-3" }]],
-        summary: [["path", { d: "M5 3h10l4 4v14H5z" }], ["path", { d: "M14 3v5h5M8 12h8M8 16h8" }]],
+        summary: [["path", { d: "M6 3h9l4 4v14H6z" }], ["path", { d: "M14 3v5h5M9 12h7M9 16h7" }]],
       };
 
       function createFeatureMark(iconName) {
@@ -668,8 +674,12 @@
           : "Подключите PHANTON в Telegram Business";
       }
 
-      function createStat(label, value, foot, glyph) {
-        const card = el("article", "stat-card");
+      function createStat(label, value, foot, glyph, onClick) {
+        const card = el(onClick ? "button" : "article", `stat-card${onClick ? " stat-card-action" : ""}`);
+        if (onClick) {
+          card.type = "button";
+          card.addEventListener("click", onClick);
+        }
         const top = el("div", "stat-top");
         top.append(el("span", "", label));
         const icon = el("span", "stat-icon", glyph);
@@ -703,7 +713,12 @@
         const statsGrid = el("div", "stats-grid");
         statsGrid.append(
           createStat("Все диалоги", stats.chatCount, "с момента начала отслеживания", "◉"),
-          createStat("Ждут ответа", stats.waitingCount, "последнее входящее без ответа", "⌁"),
+          createStat("Ждут ответа", stats.waitingCount, "последнее входящее без ответа", "⌁", () => {
+            state.filter = "waiting";
+            state.query = "";
+            renderPage();
+            content.querySelector(".section-heading")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }),
           createStat("Входящие сегодня", stats.inboundToday, "по московскому времени", "↓"),
           createStat("Исходящие сегодня", stats.outboundToday, "по московскому времени", "↑")
         );
@@ -711,7 +726,13 @@
         const section = el("section");
         const heading = el("div", "section-heading");
         const headingText = el("div");
-        headingText.append(el("h2", "", "Все чаты"), el("p", "", `${chats.length} диалогов подключено к PHANTON`));
+        const visibleChatCount = state.filter === "waiting"
+          ? chats.filter((chat) => chat.waiting).length
+          : state.filter === "muted"
+            ? chats.filter((chat) => chat.muted).length
+            : chats.length;
+        const headingLabel = state.filter === "waiting" ? "Ждут ответа" : state.filter === "muted" ? "Без звука" : "Все чаты";
+        headingText.append(el("h2", "", headingLabel), el("p", "", `${visibleChatCount} ${visibleChatCount === 1 ? "диалог" : "диалогов"}`));
         const tools = el("div", "chat-tools");
         const searchWrap = el("label", "search-wrap");
         searchWrap.insertAdjacentHTML("afterbegin", iconSvg.search);
@@ -752,11 +773,25 @@
         });
         list.replaceChildren();
         if (!chats.length) {
+          const emptyTitle = query
+            ? "Ничего не найдено"
+            : state.filter === "waiting"
+              ? "Нет диалогов, ожидающих ответа"
+              : state.filter === "muted"
+                ? "Нет чатов без звука"
+                : state.data.chats.length
+                  ? "Ничего не найдено"
+                  : "Пока нет диалогов";
+          const emptyDescription = query
+            ? "Измените поиск или фильтр, чтобы увидеть чаты."
+            : state.filter === "waiting"
+              ? "Все входящие сообщения получили ответ."
+              : state.filter === "muted"
+                ? "У всех чатов включены уведомления."
+                : "Когда появятся входящие сообщения через Business, диалоги будут собраны здесь.";
           list.append(makeEmpty(
-            state.data.chats.length ? "Ничего не найдено" : "Пока нет диалогов",
-            state.data.chats.length
-              ? "Измените поиск или фильтр, чтобы увидеть чаты."
-              : "Когда появятся входящие сообщения через Business, диалоги будут собраны здесь."
+            emptyTitle,
+            emptyDescription
           ));
           return;
         }
@@ -814,13 +849,13 @@
         activity.append(el("h2", "", "Инструменты PHANTON"));
         const features = el("div", "feature-list");
         [
-          ["↺", "История сообщений", "Сохраняет полученные сообщения и сообщает об изменениях или удалении."],
-          ["◷", "Напоминания", "Напоминает о диалоге в заданное время."],
-          ["◉", "Контроль ответа", "Находит чаты без вашего ответа и сообщает о новых сообщениях."],
-          ["◌", "Видеокружки", "Превращает отправленное видео в Telegram video note."],
+          ["history", "История сообщений", "Сохраняет полученные сообщения и сообщает об изменениях или удалении."],
+          ["reminder", "Напоминания", "Напоминает о диалоге в заданное время."],
+          ["reply", "Контроль ответа", "Находит чаты без вашего ответа и сообщает о новых сообщениях."],
+          ["video", "Видеокружки", "Превращает отправленное видео в Telegram video note."],
         ].forEach(([mark, heading, body]) => {
           const feature = el("div", "feature");
-          feature.append(el("span", "feature-mark", mark));
+          feature.append(createFeatureMark(mark));
           const text = el("div");
           text.append(el("strong", "", heading), el("span", "", body));
           feature.append(text);
