@@ -533,7 +533,7 @@
       const subtitle = document.getElementById("pageSubtitle");
       const dialog = document.getElementById("chatDialog");
       const initData = tg?.initData || "";
-      const API_BASE_URL = ""; // Заполним публичным HTTPS-адресом API после его публикации.
+      const API_BASE_URL = "https://phanton-api.ctrlfree.host";
       const headers = () => ({ Authorization: `tma ${initData}` });
       const apiUrl = (route) => `${API_BASE_URL}${route}`;
       const escapeInitials = (name) => (name || "P").trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
@@ -612,7 +612,10 @@
           updateProfileSummary();
           renderPage();
         } catch (error) {
-          setError(error.message || "Не удалось соединиться с сервером PHANTON.");
+          const message = error instanceof TypeError
+            ? "Не удалось подключиться к API. Адрес phanton-api доступен только внутри сети хостинга; для GitHub Pages нужен публичный HTTPS-адрес."
+            : error.message || "Не удалось подключиться к API.";
+          setError(message);
         } finally {
           state.loading = false;
           refresh?.classList.remove("spinning");
